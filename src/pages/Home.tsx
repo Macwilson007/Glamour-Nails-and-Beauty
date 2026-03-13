@@ -11,6 +11,16 @@ export default function Home({ user }: { user: any }) {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   useEffect(() => {
+    // Scroll to hash if present on mount
+    if (window.location.hash) {
+      const id = window.location.hash.replace('#', '');
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, []);
+
+  useEffect(() => {
     const qServices = query(collection(db, 'services'), orderBy('createdAt', 'desc'));
     const unsubServices = onSnapshot(qServices, async (snapshot) => {
       const fetchedServices = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -112,7 +122,7 @@ export default function Home({ user }: { user: any }) {
       </section>
 
       {/* Services Section */}
-      <section className="max-w-5xl mx-auto">
+      <section id="services" className="max-w-5xl mx-auto scroll-mt-24">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-serif font-medium text-stone-900 mb-4">Our Services</h2>
           <p className="text-stone-500 max-w-2xl mx-auto">Curated treatments designed to enhance your natural beauty and provide ultimate relaxation.</p>
@@ -154,7 +164,7 @@ export default function Home({ user }: { user: any }) {
       </section>
 
       {/* Gallery Section */}
-      <section className="max-w-6xl mx-auto">
+      <section id="gallery" className="max-w-6xl mx-auto scroll-mt-24">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-serif font-medium text-stone-900 mb-4">The Glamour Experience</h2>
           <p className="text-stone-500 max-w-2xl mx-auto">A glimpse into our premium treatments and stunning results.</p>

@@ -83,8 +83,8 @@ export default function Home({ user }: { user: any }) {
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden rounded-3xl bg-stone-900 text-stone-50">
         <div className="absolute inset-0">
           <img 
-            src="https://picsum.photos/seed/beauty/1920/1080?blur=2" 
-            alt="Glamour Nails & Beauty" 
+            src="https://i.pinimg.com/1200x/c9/21/83/c921830e36139ae5b5f65d2763e2df06.jpg" 
+            alt="Lekki-Ikoyi Link Bridge, Lagos" 
             className="w-full h-full object-cover opacity-40"
             referrerPolicy="no-referrer"
           />

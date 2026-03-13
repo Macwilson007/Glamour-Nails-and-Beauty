@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Mail, Lock, User, Loader2 } from 'lucide-react';
 import { loginWithGoogle, loginWithEmail, signUpWithEmail } from '../firebase';
@@ -10,6 +11,12 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +61,9 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
     }
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -180,6 +189,7 @@ export default function AuthModal({ isOpen, onClose }: { isOpen: boolean, onClos
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

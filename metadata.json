@@ -1,0 +1,5 @@
+{
+  "name": "Glamour Nails & Beauty",
+  "description": "Premium skincare and beauty salon in Lagos with an AI receptionist.",
+  "requestFramePermissions": ["microphone", "geolocation"]
+}

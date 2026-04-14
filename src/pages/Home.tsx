@@ -21,6 +21,50 @@ export default function Home({ user }: { user: any }) {
   }, []);
 
   useEffect(() => {
+    // Migration script to fix broken picsum images in existing database
+    const fixBrokenImages = async () => {
+      try {
+        const { getDocs, updateDoc, doc } = await import('firebase/firestore');
+        
+        const servicesMap: Record<string, string> = {
+          'Gele Tying & Styling': 'https://images.unsplash.com/photo-1516975080661-46b048590e80?w=800&q=80',
+          'Ankara Inspired Nail Art': 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80',
+          'Bridal Traditional Makeup': 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80',
+          'Knotless Braids': 'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=800&q=80',
+          'African Black Soap Facial': 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80',
+          'Lace Frontal Installation': 'https://images.unsplash.com/photo-1595476108010-b4d1f10d5e43?w=800&q=80'
+        };
+
+        const sSnap = await getDocs(collection(db, 'services'));
+        sSnap.forEach(d => {
+          const data = d.data();
+          if (data.imageUrl && data.imageUrl.includes('picsum.photos')) {
+            const newUrl = servicesMap[data.name] || 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80';
+            updateDoc(doc(db, 'services', d.id), { imageUrl: newUrl });
+          }
+        });
+
+        const gSnap = await getDocs(collection(db, 'gallery'));
+        const galleryUrls = [
+          'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80',
+          'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=800&q=80',
+          'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800&q=80',
+          'https://images.unsplash.com/photo-1512496015851-a1c848342685?w=800&q=80'
+        ];
+        let i = 0;
+        gSnap.forEach(d => {
+          const data = d.data();
+          if (data.url && data.url.includes('picsum.photos')) {
+            updateDoc(doc(db, 'gallery', d.id), { url: galleryUrls[i % galleryUrls.length] });
+            i++;
+          }
+        });
+      } catch (e) {
+        console.error("Migration failed", e);
+      }
+    };
+    fixBrokenImages();
+
     const qServices = query(collection(db, 'services'), orderBy('createdAt', 'desc'));
     const unsubServices = onSnapshot(qServices, async (snapshot) => {
       const fetchedServices = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -31,12 +75,12 @@ export default function Home({ user }: { user: any }) {
         try {
           const { addDoc } = await import('firebase/firestore');
           const servicesData = [
-            { name: 'Gele Tying & Styling', description: 'Expert Gele tying for weddings, owambes, and special occasions.', price: 10000, duration: 30, imageUrl: 'https://picsum.photos/seed/gele/800/600', createdAt: new Date().toISOString() },
-            { name: 'Ankara Inspired Nail Art', description: 'Custom nail designs inspired by vibrant Ankara prints.', price: 15000, duration: 60, imageUrl: 'https://picsum.photos/seed/ankaranails/800/600', createdAt: new Date().toISOString() },
-            { name: 'Bridal Traditional Makeup', description: 'Flawless, long-lasting traditional makeup for Nigerian brides.', price: 120000, duration: 120, imageUrl: 'https://picsum.photos/seed/nigerianbride/800/600', createdAt: new Date().toISOString() },
-            { name: 'Knotless Braids', description: 'Neat, protective knotless box braids. Hair extensions included.', price: 45000, duration: 240, imageUrl: 'https://picsum.photos/seed/braids/800/600', createdAt: new Date().toISOString() },
-            { name: 'African Black Soap Facial', description: 'Deep cleansing facial using authentic African black soap and shea butter.', price: 25000, duration: 45, imageUrl: 'https://picsum.photos/seed/blacksoap/800/600', createdAt: new Date().toISOString() },
-            { name: 'Lace Frontal Installation', description: 'Seamless lace frontal wig installation and styling.', price: 35000, duration: 90, imageUrl: 'https://picsum.photos/seed/frontal/800/600', createdAt: new Date().toISOString() }
+            { name: 'Gele Tying & Styling', description: 'Expert Gele tying for weddings, owambes, and special occasions.', price: 10000, duration: 30, imageUrl: 'https://images.unsplash.com/photo-1516975080661-46b048590e80?w=800&q=80', createdAt: new Date().toISOString() },
+            { name: 'Ankara Inspired Nail Art', description: 'Custom nail designs inspired by vibrant Ankara prints.', price: 15000, duration: 60, imageUrl: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80', createdAt: new Date().toISOString() },
+            { name: 'Bridal Traditional Makeup', description: 'Flawless, long-lasting traditional makeup for Nigerian brides.', price: 120000, duration: 120, imageUrl: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80', createdAt: new Date().toISOString() },
+            { name: 'Knotless Braids', description: 'Neat, protective knotless box braids. Hair extensions included.', price: 45000, duration: 240, imageUrl: 'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=800&q=80', createdAt: new Date().toISOString() },
+            { name: 'African Black Soap Facial', description: 'Deep cleansing facial using authentic African black soap and shea butter.', price: 25000, duration: 45, imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80', createdAt: new Date().toISOString() },
+            { name: 'Lace Frontal Installation', description: 'Seamless lace frontal wig installation and styling.', price: 35000, duration: 90, imageUrl: 'https://images.unsplash.com/photo-1595476108010-b4d1f10d5e43?w=800&q=80', createdAt: new Date().toISOString() }
           ];
           for (const s of servicesData) {
             await addDoc(collection(db, 'services'), s);
@@ -57,10 +101,10 @@ export default function Home({ user }: { user: any }) {
         try {
           const { addDoc } = await import('firebase/firestore');
           const galleryData = [
-            { type: 'image', url: 'https://picsum.photos/seed/owambe1/800/800', prompt: 'Beautiful Nigerian bride with gele', createdAt: new Date().toISOString() },
-            { type: 'image', url: 'https://picsum.photos/seed/braids1/800/800', prompt: 'Neat knotless braids styling', createdAt: new Date().toISOString() },
-            { type: 'image', url: 'https://picsum.photos/seed/makeupng/800/800', prompt: 'Flawless dark skin makeup', createdAt: new Date().toISOString() },
-            { type: 'image', url: 'https://picsum.photos/seed/nailsng/800/800', prompt: 'Vibrant Ankara nail art', createdAt: new Date().toISOString() }
+            { type: 'image', url: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80', prompt: 'Beautiful Nigerian bride with gele', createdAt: new Date().toISOString() },
+            { type: 'image', url: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=800&q=80', prompt: 'Neat knotless braids styling', createdAt: new Date().toISOString() },
+            { type: 'image', url: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800&q=80', prompt: 'Flawless dark skin makeup', createdAt: new Date().toISOString() },
+            { type: 'image', url: 'https://images.unsplash.com/photo-1512496015851-a1c848342685?w=800&q=80', prompt: 'Vibrant Ankara nail art', createdAt: new Date().toISOString() }
           ];
           for (const g of galleryData) {
             await addDoc(collection(db, 'gallery'), g);
@@ -83,10 +127,13 @@ export default function Home({ user }: { user: any }) {
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden rounded-3xl bg-stone-900 text-stone-50">
         <div className="absolute inset-0">
           <img 
-            src="https://i.pinimg.com/1200x/c9/21/83/c921830e36139ae5b5f65d2763e2df06.jpg" 
+            src="https://images.unsplash.com/photo-1618828665011-0abd973f7bb8?q=80&w=1920&auto=format&fit=crop" 
             alt="Lekki-Ikoyi Link Bridge, Lagos" 
             className="w-full h-full object-cover opacity-40"
             referrerPolicy="no-referrer"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1920&auto=format&fit=crop";
+            }}
           />
         </div>
         <div className="relative z-10 text-center max-w-3xl px-4">
@@ -141,6 +188,9 @@ export default function Home({ user }: { user: any }) {
                   alt={service.name} 
                   className="w-full h-48 object-cover rounded-xl mb-6"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80";
+                  }}
                 />
               )}
               <h3 className="text-xl font-medium text-stone-900 mb-2">{service.name}</h3>
@@ -188,6 +238,9 @@ export default function Home({ user }: { user: any }) {
                   alt="Gallery item" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80";
+                  }}
                 />
               )}
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

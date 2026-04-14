@@ -266,19 +266,19 @@ export default function Admin({ user }: { user: any }) {
     setIsSeeding(true);
     try {
       const servicesData = [
-        { name: 'Gele Tying & Styling', description: 'Expert Gele tying for weddings, owambes, and special occasions.', price: 10000, duration: 30, imageUrl: 'https://picsum.photos/seed/gele/800/600', createdAt: new Date().toISOString() },
-        { name: 'Ankara Inspired Nail Art', description: 'Custom nail designs inspired by vibrant Ankara prints.', price: 15000, duration: 60, imageUrl: 'https://picsum.photos/seed/ankaranails/800/600', createdAt: new Date().toISOString() },
-        { name: 'Bridal Traditional Makeup', description: 'Flawless, long-lasting traditional makeup for Nigerian brides.', price: 120000, duration: 120, imageUrl: 'https://picsum.photos/seed/nigerianbride/800/600', createdAt: new Date().toISOString() },
-        { name: 'Knotless Braids', description: 'Neat, protective knotless box braids. Hair extensions included.', price: 45000, duration: 240, imageUrl: 'https://picsum.photos/seed/braids/800/600', createdAt: new Date().toISOString() },
-        { name: 'African Black Soap Facial', description: 'Deep cleansing facial using authentic African black soap and shea butter.', price: 25000, duration: 45, imageUrl: 'https://picsum.photos/seed/blacksoap/800/600', createdAt: new Date().toISOString() },
-        { name: 'Lace Frontal Installation', description: 'Seamless lace frontal wig installation and styling.', price: 35000, duration: 90, imageUrl: 'https://picsum.photos/seed/frontal/800/600', createdAt: new Date().toISOString() }
+        { name: 'Gele Tying & Styling', description: 'Expert Gele tying for weddings, owambes, and special occasions.', price: 10000, duration: 30, imageUrl: 'https://images.unsplash.com/photo-1516975080661-46b048590e80?w=800&q=80', createdAt: new Date().toISOString() },
+        { name: 'Ankara Inspired Nail Art', description: 'Custom nail designs inspired by vibrant Ankara prints.', price: 15000, duration: 60, imageUrl: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80', createdAt: new Date().toISOString() },
+        { name: 'Bridal Traditional Makeup', description: 'Flawless, long-lasting traditional makeup for Nigerian brides.', price: 120000, duration: 120, imageUrl: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80', createdAt: new Date().toISOString() },
+        { name: 'Knotless Braids', description: 'Neat, protective knotless box braids. Hair extensions included.', price: 45000, duration: 240, imageUrl: 'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=800&q=80', createdAt: new Date().toISOString() },
+        { name: 'African Black Soap Facial', description: 'Deep cleansing facial using authentic African black soap and shea butter.', price: 25000, duration: 45, imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80', createdAt: new Date().toISOString() },
+        { name: 'Lace Frontal Installation', description: 'Seamless lace frontal wig installation and styling.', price: 35000, duration: 90, imageUrl: 'https://images.unsplash.com/photo-1595476108010-b4d1f10d5e43?w=800&q=80', createdAt: new Date().toISOString() }
       ];
 
       const galleryData = [
-        { type: 'image', url: 'https://picsum.photos/seed/owambe1/800/800', prompt: 'Beautiful Nigerian bride with gele', createdAt: new Date().toISOString() },
-        { type: 'image', url: 'https://picsum.photos/seed/braids1/800/800', prompt: 'Neat knotless braids styling', createdAt: new Date().toISOString() },
-        { type: 'image', url: 'https://picsum.photos/seed/makeupng/800/800', prompt: 'Flawless dark skin makeup', createdAt: new Date().toISOString() },
-        { type: 'image', url: 'https://picsum.photos/seed/nailsng/800/800', prompt: 'Vibrant Ankara nail art', createdAt: new Date().toISOString() }
+        { type: 'image', url: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80', prompt: 'Beautiful Nigerian bride with gele', createdAt: new Date().toISOString() },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=800&q=80', prompt: 'Neat knotless braids styling', createdAt: new Date().toISOString() },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800&q=80', prompt: 'Flawless dark skin makeup', createdAt: new Date().toISOString() },
+        { type: 'image', url: 'https://images.unsplash.com/photo-1512496015851-a1c848342685?w=800&q=80', prompt: 'Vibrant Ankara nail art', createdAt: new Date().toISOString() }
       ];
 
       for (const s of servicesData) {
@@ -468,7 +468,15 @@ export default function Admin({ user }: { user: any }) {
                         {item.type === 'video' ? (
                           <video src={item.url} className="w-16 h-16 object-cover rounded-lg" muted />
                         ) : (
-                          <img src={item.url} alt="Gallery" className="w-16 h-16 object-cover rounded-lg" referrerPolicy="no-referrer" />
+                          <img 
+                            src={item.url} 
+                            alt="Gallery" 
+                            className="w-16 h-16 object-cover rounded-lg" 
+                            referrerPolicy="no-referrer" 
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80";
+                            }}
+                          />
                         )}
                       </td>
                       <td className="px-6 py-4 font-medium text-stone-900 capitalize">{item.type}</td>

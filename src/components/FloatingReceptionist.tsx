@@ -9,7 +9,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 export default function FloatingReceptionist({ user }: { user: any }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'model', text: string, isMap?: boolean }[]>([
-    { role: 'model', text: 'Hello! I am the Glamour AI Receptionist. How can I help you today?' }
+    { role: 'model', text: 'Hello! I am the Nails and Beauty AI Receptionist. How can I help you today?' }
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -53,7 +53,7 @@ export default function FloatingReceptionist({ user }: { user: any }) {
           contents: userText,
           config: {
             tools: [{ googleMaps: {} }],
-            systemInstruction: "You are a helpful receptionist for Glamour Nails & Beauty in Lagos. Help the user find the salon or nearby places."
+            systemInstruction: "You are a helpful receptionist for Nails and Beauty in Lagos. Help the user find the salon or nearby places."
           }
         });
         
@@ -71,7 +71,7 @@ export default function FloatingReceptionist({ user }: { user: any }) {
         const chat = ai.chats.create({
           model: 'gemini-3.1-pro-preview',
           config: {
-            systemInstruction: "You are a premium, polite, and helpful AI receptionist for Glamour Nails & Beauty in Lagos. Keep responses concise and elegant."
+            systemInstruction: "You are a premium, polite, and helpful AI receptionist for Nails and Beauty in Lagos. Keep responses concise and elegant."
           }
         });
         
@@ -187,7 +187,7 @@ export default function FloatingReceptionist({ user }: { user: any }) {
           speechConfig: {
             voiceConfig: { prebuiltVoiceConfig: { voiceName: "Zephyr" } }
           },
-          systemInstruction: "You are a premium AI receptionist for Glamour Nails & Beauty in Lagos. Speak elegantly and concisely."
+          systemInstruction: "You are a premium AI receptionist for Nails and Beauty in Lagos. Speak elegantly and concisely."
         },
         callbacks: {
           onopen: () => {
@@ -279,7 +279,7 @@ export default function FloatingReceptionist({ user }: { user: any }) {
                   <Sparkles className="w-4 h-4 text-stone-300" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-sm">Glamour AI</h3>
+                  <h3 className="font-medium text-sm">Nails and Beauty AI</h3>
                   <p className="text-xs text-stone-400">Receptionist</p>
                 </div>
               </div>

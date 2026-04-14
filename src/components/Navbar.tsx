@@ -21,7 +21,7 @@ export default function Navbar({ user, role }: { user: any, role: string | null 
         <div className="flex justify-between h-16 items-center">
           <Link to="/" className="flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-stone-900" />
-            <span className="font-serif text-xl font-medium tracking-tight">Glamour Nails & Beauty</span>
+            <span className="font-serif text-xl font-medium tracking-tight">Nails and Beauty</span>
           </Link>
           
           <div className="flex items-center gap-6">

@@ -166,7 +166,7 @@ export default function Home({ user }: { user: any }) {
       {/* Gallery Section */}
       <section id="gallery" className="max-w-6xl mx-auto scroll-mt-24">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-medium text-stone-900 mb-4">The Glamour Experience</h2>
+          <h2 className="text-3xl md:text-4xl font-serif font-medium text-stone-900 mb-4">The Nails and Beauty Experience</h2>
           <p className="text-stone-500 max-w-2xl mx-auto">A glimpse into our premium treatments and stunning results.</p>
         </div>
 
@@ -206,7 +206,7 @@ export default function Home({ user }: { user: any }) {
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-stone-900" />
-            <span className="font-serif text-lg font-medium">Glamour Nails & Beauty</span>
+            <span className="font-serif text-lg font-medium">Nails and Beauty</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-stone-500">
             <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> Lagos, Nigeria</span>
